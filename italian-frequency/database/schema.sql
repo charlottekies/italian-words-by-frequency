@@ -1,0 +1,11 @@
+BEGIN TRANSACTION;
+
+DROP TABLE IF EXISTS word;
+
+CREATE TABLE word (
+  id serial PRIMARY KEY,
+  word varchar(256) NOT NULL,
+  frequency integer NOT NULL
+);
+
+COMMIT TRANSACTION;

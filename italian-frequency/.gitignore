@@ -40,4 +40,4 @@ out/
 
 
 ### Start Script with environment variables ###
-./src/main/java/start.sh
+italian-frequency/src/main/java/com/kies/italianfrequency/start.sh

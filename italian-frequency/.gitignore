@@ -37,3 +37,7 @@ out/
 .vscode/
 
 .DS_Store
+
+
+### Start Script with environment variables ###
+./src/main/java/start.sh

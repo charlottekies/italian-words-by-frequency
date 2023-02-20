@@ -59,18 +59,26 @@
       },
     },
     methods: {
-      sort(key) {
-        if (this.sortKey === key) {
-          this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
-        } else {
-          this.sortKey = key;
-          this.sortOrder = "asc";
-        }
-        this.transformedWords.sort((a, b) => {
-          const sortValue = a[this.sortKey] - b[this.sortKey];
-          return this.sortOrder === "asc" ? sortValue : -sortValue;
-        });
-      },
+        sort(key) {
+            if (this.sortKey === key) {
+                this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                this.sortKey = key;
+                this.sortOrder = 'asc';
+            }
+
+            if (this.sortKey === 'word') {
+                this.transformedWords.sort((a, b) => {
+                const sortValue = a.word.localeCompare(b.word, undefined, { sensitivity: 'base' });
+                return this.sortOrder === 'asc' ? sortValue : -sortValue;
+                });
+            } else if (this.sortKey === 'frequency') {
+                this.transformedWords.sort((a, b) => {
+                const sortValue = a.frequency - b.frequency;
+                return this.sortOrder === 'asc' ? sortValue : -sortValue;
+                });
+            }
+            },
     },
     components: {
       FontAwesomeIcon,

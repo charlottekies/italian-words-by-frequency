@@ -16,7 +16,6 @@
       </table>
     </div>
     <div v-else>
-      <p>No words to display</p>
     </div>
   </template>
   

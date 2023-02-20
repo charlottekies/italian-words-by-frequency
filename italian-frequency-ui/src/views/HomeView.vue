@@ -2,7 +2,6 @@
   <div>
     <word-table :words="words" />
     <div v-if="!words || words.length === 0">
-      No words to display.
     </div>
   </div>
 </template>

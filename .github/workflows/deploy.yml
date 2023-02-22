@@ -22,7 +22,6 @@ jobs:
         run: |
           cd ./italian-frequency-ui
           npm ci
-        working-directory: ./italian-frequency-ui
 
       - name: Build and deploy
         env:
@@ -31,6 +30,5 @@ jobs:
           cd ./italian-frequency-ui
           npm ci
           npm run build
-          sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" italian-frequency-ui/dist/js/app.*.js
+          sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" dist/js/app.*.js
           npx gh-pages -d italian-frequency-ui -b gh-pages -u ${{ github.actor }}
-        working-directory: ./italian-frequency-ui

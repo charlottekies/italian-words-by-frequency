@@ -29,17 +29,14 @@ jobs:
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         
-      - name: Build Vue.js project 1
-        working-directory: ./italian-frequency-ui
-        run: |
-          ./node_modules/.bin/vue-cli-service build --mode production
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-
       - name: Build Vue.js project
         working-directory: ./italian-frequency-ui
         run: |
-          npm run build
+          export PATH="./node_modules/.bin:$PATH"
+          vue-cli-service build --mode production
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
@@ -48,6 +45,7 @@ jobs:
           clean: true
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          
       - name: Set environment variables for build
         working-directory: ./italian-frequency-ui
         run: |
@@ -56,6 +54,7 @@ jobs:
         env:
           NODE_ENV: production
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          
       - name: Rebuild Vue.js project with environment variables
         working-directory: ./italian-frequency-ui
         run: |
@@ -63,6 +62,7 @@ jobs:
           npm run build -- --mode production
         env:
           NODE_ENV: production
+          
       - name: Deploy to GitHub Pages with environment variables
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:

@@ -18,20 +18,20 @@ jobs:
           node-version: "16.x"
 
       - name: Install dependencies
-        working-directory: ./italian-frequency-ui
+        working-directory: ./italian-frequency-ui/dist
         run: npm install
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         
       - name: Install Vue CLI
-        working-directory: ./italian-frequency-ui
+        working-directory: ./italian-frequency-ui/dist
         run: npm install -g @vue/cli
              vue --version
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         
       - name: Build Vue.js project
-        working-directory: ./italian-frequency-ui
+        working-directory: ./italian-frequency-ui/dist
         run: |
           export PATH="./node_modules/.bin:$PATH"
           vue-cli-service build --mode production

@@ -34,7 +34,7 @@ jobs:
         working-directory: ./italian-frequency-ui
         run: |
           export PATH="./node_modules/.bin:$PATH"
-          vue build --mode production
+          vue-cli-service build --mode production
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
 
@@ -60,6 +60,7 @@ jobs:
         working-directory: ./italian-frequency-ui
         run: |
           export PATH="./node_modules/.bin:$PATH"
+          run: npm install -g @vue/cli
           npm run build -- --mode production
         env:
           NODE_ENV: production

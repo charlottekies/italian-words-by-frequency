@@ -1,37 +1,36 @@
-name: Build and Deploy
-
+name: Deploy to GitHub Pages
 on:
   push:
     branches:
       - prod
-
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+        uses: actions/checkout@v2
         with:
-          node-version: "16.x"
+          ref: prod
+          path: ./italian-frequency-ui
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
 
       - name: Install dependencies
-        working-directory: ./italian-frequency-ui
-        run: npm install
-
-      - name: Build Vue.js project
-        working-directory: ./italian-frequency-ui
         run: |
-          npm run build
-          API_BASE_URL=${{ secrets.API_BASE_URL }} npm run serve
+          cd ./italian-frequency-ui
+          npm ci
+        working-directory: ./italian-frequency-ui
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: italian-frequency-ui/dist
-          clean: true
+      - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+        run: |
+          cd ./italian-frequency-ui
+          npm ci
+          npm run build
+          sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" italian-frequency-ui/dist/js/app.*.js
+          npx gh-pages -d italian-frequency-ui -b gh-pages -u ${{ github.actor }}
+        working-directory: ./italian-frequency-ui

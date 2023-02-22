@@ -28,7 +28,7 @@ jobs:
       - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
-        working-directory: italian-frequency-ui/dist
+        working-directory: italian-frequency-ui
         run: |
           ls
           cd italian-frequency-ui

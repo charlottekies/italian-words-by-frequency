@@ -8,12 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: prod
+          path: italian-words-by-frequency
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14.x'
       - name: Install dependencies
         run: npm ci
+        working-directory: italian-words-by-frequency
       - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
@@ -21,3 +25,4 @@ jobs:
           npm run build
           sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" italian-frequency-ui/dist/js/app.*.js
           npx gh-pages -d italian-frequency-ui -b gh-pages -u ${{ github.actor }}
+        working-directory: italian-words-by-frequency

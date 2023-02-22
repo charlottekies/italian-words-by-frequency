@@ -60,7 +60,8 @@ jobs:
         working-directory: ./italian-frequency-ui
         run: |
           export PATH="./node_modules/.bin:$PATH"
-          run: npm install -g @vue/cli
+          npm install -g @vue/cli
+          vue-cli-service --version
           npm run build -- --mode production
         env:
           NODE_ENV: production

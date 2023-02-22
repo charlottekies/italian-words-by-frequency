@@ -35,6 +35,4 @@ jobs:
           npm ci
           npm run build
           sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" dist/js/app.*.js
-          cd .
           ls
-          npx gh-pages -d italian-frequency-ui -b gh-pages

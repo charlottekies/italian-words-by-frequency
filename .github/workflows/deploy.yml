@@ -23,13 +23,31 @@ jobs:
 
       - name: Build Vue.js project
         working-directory: ./italian-frequency-ui
-        env:
-            API_BASE_URL: ${{ secrets.API_BASE_URL }}
         run: |
           npm run build
-          API_BASE_URL=${{ secrets.API_BASE_URL }} npm run serve
-
       - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: italian-frequency-ui/dist
+          clean: true
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      - name: Set environment variables for build
+        working-directory: ./italian-frequency-ui
+        run: |
+          npm install dotenv-webpack --save-dev
+          echo 'VUE_APP_API_BASE_URL=${{ secrets.API_BASE_URL }}' > .env.production
+        env:
+          NODE_ENV: production
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      - name: Rebuild Vue.js project with environment variables
+        working-directory: ./italian-frequency-ui
+        run: |
+          npm run build -- --mode production
+        env:
+          NODE_ENV: production
+      - name: Deploy to GitHub Pages with environment variables
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages

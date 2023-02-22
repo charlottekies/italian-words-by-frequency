@@ -20,7 +20,7 @@ jobs:
           
       - name: Install dependencies
         working-directory: italian-frequency-ui
-        run: npm ci
+        run: npm install
         
       - name: Build and deploy
         env:

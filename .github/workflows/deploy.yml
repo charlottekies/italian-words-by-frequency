@@ -23,6 +23,8 @@ jobs:
 
       - name: Build Vue.js project
         working-directory: ./italian-frequency-ui
+        env:
+            API_BASE_URL: ${{ secrets.API_BASE_URL }}
         run: |
           npm run build
           API_BASE_URL=${{ secrets.API_BASE_URL }} npm run serve

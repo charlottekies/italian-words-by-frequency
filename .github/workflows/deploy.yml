@@ -1,57 +1,29 @@
-name: Build and Deploy
-
+name: Deploy to GitHub Pages
 on:
   push:
     branches:
       - prod
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.x"
-
-      - name: Install dependencies
-        working-directory: ./italian-frequency-ui
-        run: npm install
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-        
-      - name: Install Vue CLI
-        working-directory: ./italian-frequency-ui
-        run: npm install -g @vue/cli
-             vue --version
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-          
-      - name: Set environment variables for build
-        working-directory: ./italian-frequency-ui
-        run: |
-          npm install dotenv-webpack --save-dev
-          echo 'API_BASE_URL=${{ secrets.API_BASE_URL }}' > .env
-        env:
-          NODE_ENV: production
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-             
-      - name: Build Vue.js project
-        working-directory: ./italian-frequency-ui
-        run: |
-          export PATH="./node_modules/.bin:$PATH"
-          vue-cli-service build --mode production
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-          
-      - name: Deploy to GitHub Pages with environment variables
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: italian-frequency-ui/dist
-          clean: true
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+      with:
+        ref: prod
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: "14.x"
+    - name: Install Dependencies
+      run: npm install
+    - name: Build
+      run: npm run build
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        publish_dir: ./dist
+        cname: italian-words-by-frequency.github.io
+        custom_domain: false
+      env:
+        API_BASE_URL: ${{ secrets.API_BASE_URL }}

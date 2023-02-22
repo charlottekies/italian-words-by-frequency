@@ -5,5 +5,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
     plugins: [new Dotenv()],
+    performance: {
+      maxAssetSize: 1000000, // or whatever size limit you want to set
+    },
   },
 });

@@ -6,8 +6,6 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 
-require("dotenv").config();
-
 library.add(faSort);
 
 createApp(App)

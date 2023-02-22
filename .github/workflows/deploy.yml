@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd italian-frequency-ui
+          cd italian-words-by-frequency/italian-frequency-ui
           ls
           npm ci
 

@@ -20,15 +20,21 @@ jobs:
       - name: Install dependencies
         working-directory: ./italian-frequency-ui
         run: npm install
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
         
       - name: Install Vue CLI
         working-directory: ./italian-frequency-ui
         run: npm install -g @vue/cli
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
         
-      - name: Build Vue.js project
+      - name: Build Vue.js project 1
         working-directory: ./italian-frequency-ui
         run: |
           ./node_modules/.bin/vue-cli-service build --mode production
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
 
       - name: Build Vue.js project
         working-directory: ./italian-frequency-ui

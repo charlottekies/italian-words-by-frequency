@@ -24,6 +24,11 @@ jobs:
       - name: Install Vue CLI
         working-directory: ./italian-frequency-ui
         run: npm install -g @vue/cli
+        
+      - name: Build Vue.js project
+        working-directory: ./italian-frequency-ui
+        run: |
+          ./node_modules/.bin/vue-cli-service build --mode production
 
       - name: Build Vue.js project
         working-directory: ./italian-frequency-ui

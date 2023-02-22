@@ -18,13 +18,17 @@ jobs:
           node-version: "16.x"
 
       - name: Install dependencies
-        working-directory: ./italian-frequency-ui
-        run: npm install
+        run: npm ci
+
+      - name: Install Vue CLI
+        run: npm install -g @vue/cli
+        env:
+          CI: true
 
       - name: Build Vue.js project
+        run: npm run build
         working-directory: ./italian-frequency-ui
-        run: |
-          npm run build
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
@@ -33,6 +37,7 @@ jobs:
           clean: true
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+
       - name: Set environment variables for build
         working-directory: ./italian-frequency-ui
         run: |
@@ -41,12 +46,14 @@ jobs:
         env:
           NODE_ENV: production
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+
       - name: Rebuild Vue.js project with environment variables
         working-directory: ./italian-frequency-ui
         run: |
           npm run build -- --mode production
         env:
           NODE_ENV: production
+
       - name: Deploy to GitHub Pages with environment variables
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:

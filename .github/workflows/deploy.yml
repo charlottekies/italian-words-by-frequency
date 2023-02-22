@@ -1,36 +1,23 @@
 name: Deploy to GitHub Pages
-
 on:
   push:
     branches:
       - prod
-
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          submodules: 'recursive'
-          ref: prod
-          path: 'italian-frequency-ui'
-
+          node-version: '14.x'
       - name: Install dependencies
-        run: |
-          cd italian-frequency-ui
-          npm install
-
-      - name: Build the app
-        run: |
-          cd italian-frequency-ui
-          npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          publish_dir: ./italian-frequency-ui/dist
-          commit_message: Deploy from GitHub Actions
-          commit_user_name: Charlotte Kies
+        run: npm ci
+      - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
+        run: |
+          npm run build
+          sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" italian-frequency-ui/dist/js/app.*.js
+          npx gh-pages -d italian-frequency-ui -b gh-pages -u ${{ github.actor }}

@@ -1,27 +1,35 @@
-steps:
-  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  - uses: actions/checkout@v3
+name: Build and Deploy
 
-  # Sets up Node.js 16.x
-  - name: Setup Node.js 16.x
-    uses: actions/setup-node@v3
-    with:
-      node-version: "16.x"
+on:
+  push:
+    branches:
+      - prod
 
-  # Installs dependencies
-  - name: Install dependencies
-    run: npm install
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  # Builds the Vue.js project
-  - name: Build Vue.js project
-    run: npm run build
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
 
-  # Deploy to GitHub Pages
-  - name: Deploy to GitHub Pages
-    uses: JamesIves/github-pages-deploy-action@4.1.4
-    with:
-      branch: gh-pages
-      folder: dist
-      clean: true
-    env:
-      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Vue.js project
+        run: |
+          npm run build
+          API_BASE_URL=${{ secrets.API_BASE_URL }} npm run serve
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: dist
+          clean: true
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}

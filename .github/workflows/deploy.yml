@@ -19,8 +19,8 @@ jobs:
           node-version: '16.x'
 
       - name: Install dependencies
+        working-directory: italian-frequency-ui
         run: |
-          cd italian-words-by-frequency/italian-frequency-ui
           ls
           npm ci
 

@@ -50,7 +50,7 @@ jobs:
         working-directory: ./italian-frequency-ui
         run: |
           npm install dotenv-webpack --save-dev
-          echo 'VUE_APP_API_BASE_URL=${{ secrets.API_BASE_URL }}' > .env.production
+          echo 'API_BASE_URL=${{ secrets.API_BASE_URL }}' > .env
         env:
           NODE_ENV: production
           API_BASE_URL: ${{ secrets.API_BASE_URL }}

@@ -3,19 +3,19 @@ on:
   push:
     branches:
       - prod
-      
-permissions:
-          contents: write
-          pages: write
-          id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: prod
+          ref: ${{ github.head_ref }}
           path: ./italian-frequency-ui
 
       - name: Set up Node.js
@@ -25,23 +25,19 @@ jobs:
 
       - name: Install dependencies
         working-directory: italian-frequency-ui
-        run: |
-          ls
-          cd italian-frequency-ui
-          npm ci
+        run: npm ci
 
       - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         working-directory: italian-frequency-ui
         run: |
-          ls
-          cd italian-frequency-ui
-          npm ci
           npm run build
-          sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" dist/js/app.*.js
+          sed -i "s|process.env.API_BASE_URL|'${{ secrets.API_BASE_URL }}'|g" dist/js/app.*.js
           ls
-          
+
       - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v1.0.7
-        
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: italian-frequency-ui/dist

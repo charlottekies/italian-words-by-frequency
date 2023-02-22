@@ -44,3 +44,6 @@ jobs:
           
       - name: Deploy GitHub Pages site
         uses: actions/deploy-pages@v1.2.4
+        with:
+          build_dir: italian-frequency-ui/dist
+    # Whether to treat build_dir as an absolute path

@@ -8,7 +8,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,12 +15,12 @@ jobs:
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2.5.3
         with:
-          node-version: 16.x
+          node-version: "16.x"
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the app
+      - name: Build Vue.js project
         run: npm run build
 
       - name: Deploy to GitHub Pages
@@ -29,9 +28,6 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
-          token: ${{ secrets.GITHUB_TOKEN }}
-          domain: ${{ secrets.DOMAIN }}
-          cname: ${{ secrets.CNAME }}
-          commit_message: "Deployed to GitHub Pages"
-          enable_jekyll: true
-          endpoint: ${{ secrets.API_BASE_URL }}
+          clean: true
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}

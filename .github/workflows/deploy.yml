@@ -42,8 +42,8 @@ jobs:
           sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" dist/js/app.*.js
           ls
           
-      - name: Deploy GitHub Pages site
-        uses: actions/deploy-pages@v1.2.4
-        with:
-          build_dir: italian-frequency-ui/dist
-    # Whether to treat build_dir as an absolute path
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1.0.7
+        with: 
+          path: italian-frequency-ui/dist
+        

@@ -59,6 +59,7 @@ jobs:
       - name: Rebuild Vue.js project with environment variables
         working-directory: ./italian-frequency-ui
         run: |
+          export PATH="./node_modules/.bin:$PATH"
           npm run build -- --mode production
         env:
           NODE_ENV: production

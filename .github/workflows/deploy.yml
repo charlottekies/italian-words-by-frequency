@@ -43,7 +43,7 @@ jobs:
         working-directory: ./italian-frequency-ui
         run: |
           export PATH="./node_modules/.bin:$PATH"
-          vue build --mode production
+          vue-cli-service build --mode production
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           

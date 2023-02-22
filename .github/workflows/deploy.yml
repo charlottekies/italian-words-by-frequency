@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
@@ -8,21 +8,30 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v2.3.0
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2.5.3
         with:
           node-version: 16.x
-      - name: Install Dependencies
-        run: |
-          cd frontend
-          npm install
-      - name: Build and Deploy
-        run: |
-          cd frontend
-          npm run build
-          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> .env.production
-          npm install -g push-dir
-          push-dir --dir=dist --branch=gh-pages --cleanup
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the app
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: dist
+          token: ${{ secrets.GITHUB_TOKEN }}
+          domain: ${{ secrets.DOMAIN }}
+          cname: ${{ secrets.CNAME }}
+          commit_message: "Deployed to GitHub Pages"
+          enable_jekyll: true
+          endpoint: ${{ secrets.API_BASE_URL }}

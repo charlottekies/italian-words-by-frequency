@@ -21,13 +21,14 @@ jobs:
       - name: Install dependencies
         run: |
           cd ./italian-frequency-ui
+          ls
           npm ci
 
       - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         run: |
-          cd ./italian-frequency-ui
+          ls
           npm ci
           npm run build
           sed -i "s|process.env.API_BASE_URL|'${API_BASE_URL}'|g" dist/js/app.*.js

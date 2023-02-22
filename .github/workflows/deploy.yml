@@ -6,24 +6,23 @@ on:
       - prod
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Set API_BASE_URL environment variable
-        env:
-          API_BASE_URL: ${{ secrets.API_BASE_URL }}
-        run: |
-          echo "VUE_APP_API_BASE_URL=${API_BASE_URL}" >> .env.production
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./italian-frequency-ui
-      - name: Build and deploy website
-        run: npm run build
-        working-directory: ./italian-frequency-ui
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+      - name: Use Node.js
+        uses: actions/setup-node@v2.4.4
         with:
-          branch: gh-pages
-          folder: ./italian-frequency-ui/dist
+          node-version: 16.x
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm install
+      - name: Build and Deploy
+        run: |
+          cd frontend
+          npm run build
+          echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" >> .env.production
+          npm install -g push-dir
+          push-dir --dir=dist --branch=gh-pages --cleanup

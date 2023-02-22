@@ -25,7 +25,7 @@ jobs:
         
       - name: Install Vue CLI
         working-directory: ./italian-frequency-ui
-        run: npm install -g @vue/cli
+        run: npm install -g @vue/cli@latest
              vue --version
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
@@ -43,7 +43,7 @@ jobs:
         working-directory: ./italian-frequency-ui
         run: |
           export PATH="./node_modules/.bin:$PATH"
-          vue-cli-service build --mode production
+          vue build --mode production
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           

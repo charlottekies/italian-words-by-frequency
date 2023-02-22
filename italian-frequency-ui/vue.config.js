@@ -13,5 +13,4 @@ module.exports = defineConfig({
       maxAssetSize: 1000000, // or whatever size limit you want to set
     },
   },
-  exclude: [/\/\.env$/],
 });

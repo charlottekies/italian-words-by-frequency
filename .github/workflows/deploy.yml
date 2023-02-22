@@ -25,13 +25,16 @@ jobs:
 
       - name: Install dependencies
         working-directory: italian-frequency-ui
-        run: npm ci
+        run: |
+          cd italian-frequency-ui
+          npm ci
 
       - name: Build and deploy
         env:
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
         working-directory: italian-frequency-ui
         run: |
+          cd italian-frequency-ui
           npm run build
           sed -i "s|process.env.API_BASE_URL|'${{ secrets.API_BASE_URL }}'|g" dist/js/app.*.js
           ls

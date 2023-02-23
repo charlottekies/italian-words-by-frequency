@@ -31,3 +31,11 @@ italian-frequency/database/exportVars.sh
 
 # Production Environment Vars
 Italian-frequency/build/libs/start.sh
+
+# keystore
+github.jks
+github.pk12
+DigiCertGlobalRootCA.crt
+cert.pem
+keystore.p12
+Private-key.pem

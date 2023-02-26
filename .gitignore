@@ -28,6 +28,7 @@ hs_err_pid*
 italian-frequency/src/main/java/com/kies/italianfrequency/start.sh
 
 italian-frequency/database/exportVars.sh
+italian-frequency-app-springboot-server-key-pair.pem
 
 # Production Environment Vars
 Italian-frequency/build/libs/start.sh

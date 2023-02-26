@@ -3,7 +3,9 @@ const Dotenv = require("dotenv-webpack");
 
 module.exports = defineConfig({
   publicPath:
-    process.env.NODE_ENV === "production" ? "/italian-frequency-ui/" : "/",
+    process.env.NODE_ENV === "production"
+      ? "/italian-words-by-frequency/"
+      : "/",
   transpileDependencies: true,
   configureWebpack: {
     plugins: [

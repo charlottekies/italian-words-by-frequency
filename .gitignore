@@ -31,3 +31,9 @@ italian-frequency/database/exportVars.sh
 
 # Production Environment Vars
 Italian-frequency/build/libs/start.sh
+
+cert.pem
+Italian-frequency-app-springboot-server-key-pair.pem
+keystore.p12
+private-key.pem
+italian-frequency/DigiCertGlobalRootCA.crt

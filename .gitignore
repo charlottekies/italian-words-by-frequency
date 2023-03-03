@@ -28,12 +28,24 @@ hs_err_pid*
 italian-frequency/src/main/java/com/kies/italianfrequency/start.sh
 
 italian-frequency/database/exportVars.sh
+italian-frequency-app-springboot-server-key-pair.pem
 
 # Production Environment Vars
 Italian-frequency/build/libs/start.sh
 
+# keystore
+github.jks
+github.pk12
+DigiCertGlobalRootCA.crt
 cert.pem
-Italian-frequency-app-springboot-server-key-pair.pem
 keystore.p12
-private-key.pem
-italian-frequency/DigiCertGlobalRootCA.crt
+Private-key.pem
+hUfcbSXu_3KaFr8yEhDRpmvbj1llqn7mCX9nmb4dxTc
+rds-keystore.p12
+rds-ca-cert.pem
+rds-ca-2019-root.pem
+rds-ca-2019-root.der
+privkey.pem
+keystoreSelfCertified.p12
+fullchain.pem
+

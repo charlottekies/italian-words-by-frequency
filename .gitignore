@@ -49,3 +49,8 @@ privkey.pem
 keystoreSelfCertified.p12
 fullchain.pem
 
+cert.pem
+Italian-frequency-app-springboot-server-key-pair.pem
+keystore.p12
+private-key.pem
+italian-frequency/DigiCertGlobalRootCA.crt

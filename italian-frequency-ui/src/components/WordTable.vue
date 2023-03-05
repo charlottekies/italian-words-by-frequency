@@ -57,7 +57,7 @@
       return {
         sortKey: "",
         sortOrder: "",
-        maxFrequency: this.words.length,
+        maxFrequency: 5000,
         minFrequency: 1,
         search: ""
       };

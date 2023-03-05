@@ -1,6 +1,18 @@
 <template>
     <div v-if="transformedWords.length">
-      <table>
+      <!-- filtering -->
+      <label for="filter-range">Filter by frequency range:</label>
+      <label for="filter-range-min">Lowest frequency:</label>
+      <input id="filter-range-min" type="number" v-model="minFrequency" />
+      <label for="filter-range-max">Highest frequency:</label>
+      <input id="filter-range-max" type="number" v-model="maxFrequency" />
+
+      <br>
+      <label for="search">Search</label>
+      <input id="search" type="text" v-model="search" />
+
+      <!-- table -->
+      <table :words="words" :max-frequency="maxFrequency" :min-frequncy="minFrequency">
         <thead>
           <tr>
             <th @click="sort('word')">
@@ -20,7 +32,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="wordObj in transformedWords" :key="wordObj.frequency">
+          <tr v-for="wordObj in filteredWords" :key="wordObj.frequency">
             <td>{{ wordObj.word }}</td>
             <td>{{ wordObj.frequency }}</td>
           </tr>
@@ -45,6 +57,9 @@
       return {
         sortKey: "",
         sortOrder: "",
+        maxFrequency: this.words.length,
+        minFrequency: 1,
+        search: ""
       };
     },
     computed: {
@@ -57,6 +72,13 @@
         }
         return [];
       },
+      filteredWords() {
+        return this.transformedWords.filter((wordObj) => {
+          const matchesSearchQuery = !this.search || wordObj.word.toLowerCase().includes(this.search.toLowerCase());
+          const isInRange = (wordObj.frequency >= this.minFrequency || !this.minFrequency) && (wordObj.frequency <= this.maxFrequency || !this.maxFrequency);
+          return matchesSearchQuery && isInRange;
+        });
+      },
     },
     methods: {
         sort(key) {
@@ -68,12 +90,12 @@
             }
 
             if (this.sortKey === 'word') {
-                this.transformedWords.sort((a, b) => {
+                this.filteredWords.sort((a, b) => {
                 const sortValue = a.word.localeCompare(b.word, undefined, { sensitivity: 'base' });
                 return this.sortOrder === 'asc' ? sortValue : -sortValue;
                 });
             } else if (this.sortKey === 'frequency') {
-                this.transformedWords.sort((a, b) => {
+                this.filteredWords.sort((a, b) => {
                 const sortValue = a.frequency - b.frequency;
                 return this.sortOrder === 'asc' ? sortValue : -sortValue;
                 });
@@ -82,7 +104,10 @@
     },
     components: {
       FontAwesomeIcon,
-    },
+    },created() {
+  console.log('Words prop:', this.words);
+}
+    
   };
   </script>
   

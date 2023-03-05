@@ -21,11 +21,16 @@ export default defineComponent({
     };
   },
   async created() {
-    try {
-      await this.$store.dispatch('words/fetchWords');
-      this.words = this.$store.state.words.words;
-    } catch (error) {
-      console.error(error);
+    if (this.$store.state.words) {
+        try {
+        await this.$store.dispatch('words/fetchWords');
+        this.words = this.$store.state.words.words;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    else {
+      console.log(this.$store.state.words.size)
     }
   },
 });

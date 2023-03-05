@@ -1,11 +1,17 @@
 <template>
     <div v-if="transformedWords.length">
-
+      <!-- filtering -->
       <label for="filter-range">Filter by frequency range:</label>
       <label for="filter-range-min">Lowest frequency:</label>
       <input id="filter-range-min" type="number" v-model="minFrequency" />
       <label for="filter-range-max">Highest frequency:</label>
       <input id="filter-range-max" type="number" v-model="maxFrequency" />
+
+      <br>
+      <label for="search">Search</label>
+      <input id="search" type="text" v-model="search" />
+
+      <!-- table -->
       <table :words="words" :max-frequency="maxFrequency" :min-frequncy="minFrequency">
         <thead>
           <tr>
@@ -52,7 +58,8 @@
         sortKey: "",
         sortOrder: "",
         maxFrequency: this.words.length,
-        minFrequency: 1
+        minFrequency: 1,
+        search: ""
       };
     },
     computed: {
@@ -67,10 +74,9 @@
       },
       filteredWords() {
         return this.transformedWords.filter((wordObj) => {
-          // const matchesSearchQuery = !this.searchQuery || wordObj.word.toLowerCase().includes(this.searchQuery.toLowerCase());
+          const matchesSearchQuery = !this.search || wordObj.word.toLowerCase().includes(this.search.toLowerCase());
           const isInRange = (wordObj.frequency >= this.minFrequency || !this.minFrequency) && (wordObj.frequency <= this.maxFrequency || !this.maxFrequency);
-          // return matchesSearchQuery && isInRange;
-          return isInRange;
+          return matchesSearchQuery && isInRange;
         });
       },
     },
@@ -98,7 +104,10 @@
     },
     components: {
       FontAwesomeIcon,
-    },
+    },created() {
+  console.log('Words prop:', this.words);
+}
+    
   };
   </script>
   

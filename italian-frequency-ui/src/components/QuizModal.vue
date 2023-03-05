@@ -13,7 +13,7 @@
     props: {
       isOpen: {
         type: Boolean,
-        required: true,
+        required: true
       },
     },
   };

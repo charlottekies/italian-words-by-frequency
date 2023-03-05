@@ -9,8 +9,12 @@ import jakarta.persistence.Id;
 import javax.persistence.Table;
 import jakarta.persistence.Entity;
 
+import jakarta.persistence.Transient;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity(name = "word")
@@ -34,6 +38,5 @@ public class Word {
     public Word() {
         super();
     }
-
 
 }

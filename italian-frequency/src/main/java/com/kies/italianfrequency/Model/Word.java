@@ -24,8 +24,8 @@ public class Word {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "word_id")
+    private long word_id;
 
     @JsonProperty
     @Column(name = "word")
@@ -34,6 +34,10 @@ public class Word {
     @JsonProperty
     @Column(name = "frequency")
     private int frequency;
+
+    @JsonProperty
+    @Column(name = "translation")
+    private String translation;
 
     public Word() {
         super();

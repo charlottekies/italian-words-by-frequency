@@ -16,6 +16,13 @@ def analyze_word(word):
     translator = Translator(service_urls=['translate.google.com'])
     translation = translator.translate(word, src='it', dest='en')
 
+    # It's important to note... Sometimes words have multiple meanings.
+    # The translation doesn't always match parts of speech, because I am using two libraries to derive the information
+    # Some of this may have to be manually reviewed.
+    # Example. Google translated "sei" as "six" and the italian spacy dictionary considers "sei" a verb, derived from essere.
+    # Therefore, the entry for "sei" says the translation is six, but that it is also a verb derived from "essere."
+    # I will likely be unable to rely entirely upon script to analyze these words. I will need to go over them manually, one at a time.
+    # But at least much of the legwork is done for me
     # Parse the English text to retrieve the parts of speech and morphology
     doc_en = nlp_en(translation.text)
     doc_it = nlp_it(word)

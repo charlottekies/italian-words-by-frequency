@@ -29,12 +29,16 @@
                 <font-awesome-icon :icon="sortOrder === 'asc' ? ['fas', 'arrow-up'] : ['fas', 'arrow-down']" />
               </span>
             </th>
+            <th>
+              Translation
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="wordObj in filteredWords" :key="wordObj.frequency">
             <td>{{ wordObj.word }}</td>
             <td>{{ wordObj.frequency }}</td>
+            <td>{{ wordObj.translation }}</td>
           </tr>
         </tbody>
       </table>
@@ -68,6 +72,7 @@
           return this.words.map((wordObj) => ({
             word: wordObj.word.toUpperCase(),
             frequency: wordObj.frequency,
+            translation: wordObj.translation
           }));
         }
         return [];
@@ -104,10 +109,10 @@
     },
     components: {
       FontAwesomeIcon,
-    },created() {
-  console.log('Words prop:', this.words);
-}
-    
+    },
+    created() {
+      console.log('Words prop:', this.words);
+    }
   };
   </script>
   

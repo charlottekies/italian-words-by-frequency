@@ -62,13 +62,11 @@ export default defineComponent({
       levelTwoWords: [],
       levelThreeWords: [],
       levelFourWords: [],
-      levelFiveWords: [],
       quizWords: [
         this.levelOneWords,
         this.levelTwoWords,
         this.levelThreeWords,
         this.levelFourWords,
-        this.levelFiveWords,
       ],
       currentIndex: 0,
       selectedOption: null,
@@ -81,12 +79,16 @@ export default defineComponent({
   methods: {
     generateWordList() {
       const firstWordGroup = this.getNextLevelWords(0);
-      // const secondWordGroup = this.getNextLevelWords(500);
-      // const thirdLevelWordGroup = this.getNextLevelWords(999);
-      // const fourthLevelWordGroup = this.getNextLevelWords(1499);
-      // Select 5 random words from the first 500 words
-      this.generateFirstLevelWordsWithAnswers(firstWordGroup)
-      this.shuffleWords()
+      const secondWordGroup = this.getNextLevelWords(99);
+      const thirdWordGroup = this.getNextLevelWords(100);
+      const fourthWordGroup = this.getNextLevelWords(199);
+
+      this.generateWordsWithAnswers(firstWordGroup, 1);
+      this.generateWordsWithAnswers(secondWordGroup, 2);
+      this.generateWordsWithAnswers(thirdWordGroup, 3);
+      this.generateWordsWithAnswers(fourthWordGroup, 4);
+      
+      // this.shuffleWords() // make shuffle all words 
       this.levelOneWordsScore = 0;
       this.selectedOption = null; // reset selected option when generating new word list
       this.currentIndex = 0;
@@ -95,18 +97,31 @@ export default defineComponent({
       const wordsCopy = [...this.words];
       const nextLevelWords = wordsCopy.splice(
         startingIndex,
-        startingIndex + 499
+        startingIndex + 100
       );
       return nextLevelWords;
     },
-    generateFirstLevelWordsWithAnswers(firstWordGroup) {
-      this.levelOneWords = [];
+    generateWordsWithAnswers(wordGroup, level) {
+
       for (let i = 0; i < 5; i++) {
-        const { randomIndex, randomWord } = this.generateRandomWord(firstWordGroup);
-        firstWordGroup.splice(randomIndex, 1); // remove word so it can't be chosen again
-        const { correctTranslation, incorrectTranslations } = this.generateTranslations(randomWord, firstWordGroup);
+        const { randomIndex, randomWord } = this.generateRandomWord(wordGroup);
+        wordGroup.splice(randomIndex, 1); // remove word so it can't be chosen again
+        const { correctTranslation, incorrectTranslations } = this.generateTranslations(randomWord, wordGroup);
         const wordWithAnswers = this.generateWordWithAnswers(correctTranslation, incorrectTranslations, randomWord);
-        this.levelOneWords.push(wordWithAnswers);
+        switch (level) {
+          case 1: 
+            this.levelOneWords.push(wordWithAnswers);
+            break;
+          case 2:
+            this.levelTwoWords.push(wordWithAnswers);
+            break;
+          case 3:
+            this.levelThreeWords.push(wordWithAnswers);
+            break;
+          case 4:
+            this.levelFourWords.push(wordWithAnswers);
+            break;
+        }
       }
     },
     generateRandomWord(words) {

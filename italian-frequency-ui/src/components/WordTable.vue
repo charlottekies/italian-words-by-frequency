@@ -111,7 +111,6 @@
       FontAwesomeIcon,
     },
     created() {
-      console.log('Words prop:', this.words);
     }
   };
   </script>

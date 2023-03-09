@@ -37,7 +37,8 @@
           </div>
         </div>
         <div v-else>
-          <p>No words in the quizWords array.</p>
+          <h2>Done!</h2>
+          <p>Based on your results, we recommend you begin studying at level {{ recommendedLevel }}</p>
         </div>
       </quiz-modal>
       <word-table :words="words" />
@@ -73,6 +74,7 @@ export default defineComponent({
       selectedOption: null,
       wordSet: 0, // Counter for the set of words
       correctOption: null,
+      recommendedLevel: null,
     };
   },
   computed: {
@@ -193,11 +195,14 @@ export default defineComponent({
           this.currentLevelIndex++ 
           if (this.currentLevelIndex <= this.quizWords.length-1) {
             this.currentLevelWords = this.quizWords[this.currentLevelIndex]
+            this.recommendedLevel = this.currentLevelIndex + 2
           } else {
             this.currentLevelWords = []
           }
         } else {
           console.log("You failed this level")
+          this.recommendedLevel = this.currentLevelIndex + 1
+          this.currentLevelWords = []
         }
         this.selectedOption = null;
       }, 250);

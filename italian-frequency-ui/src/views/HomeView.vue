@@ -36,6 +36,9 @@
             </div>
           </div>
         </div>
+        <div v-else>
+          <p>No words in the quizWords array.</p>
+        </div>
       </quiz-modal>
       <word-table :words="words" />
       <div v-if="!words || words.length === 0"></div>

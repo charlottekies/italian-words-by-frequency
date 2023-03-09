@@ -189,7 +189,6 @@ export default defineComponent({
           this.currentIndex = 0;
           this.currentLevelIndex++ 
           this.currentLevelWords = this.quizWords[this.currentLevelIndex]
-          this.currentLevelIndex++ 
         } else {
           console.log("You failed this level")
         }

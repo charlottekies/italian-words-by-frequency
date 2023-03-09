@@ -188,7 +188,11 @@ export default defineComponent({
           console.log("You passed this level!")
           this.currentIndex = 0;
           this.currentLevelIndex++ 
-          this.currentLevelWords = this.quizWords[this.currentLevelIndex]
+          if (this.currentLevelIndex <= this.quizWords.length-1) {
+            this.currentLevelWords = this.quizWords[this.currentLevelIndex]
+          } else {
+            this.currentLevelWords = []
+          }
         } else {
           console.log("You failed this level")
         }

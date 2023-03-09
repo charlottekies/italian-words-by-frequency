@@ -5,13 +5,13 @@
         Take Assessment Quiz
       </button>
       <quiz-modal :is-open="showModal" @close="showModal = false">
-        <div v-if="levelOneWords[currentIndex]">
-          <h2 id="quiz-word">{{ levelOneWords[currentIndex].word }}</h2>
+        <div v-if="currentLevelWords[currentIndex]">
+          <h2 id="quiz-word">{{ currentLevelWords[currentIndex].word }}</h2>
 
           <div id="quiz-answers-container">
             <div
               id="quiz-answers"
-              v-for="(wordOption, index) in levelOneWords[currentIndex].options"
+              v-for="(wordOption, index) in currentLevelWords[currentIndex].options"
               :key="index"
             >
               <v-btn-toggle v-model="selectedOption">
@@ -57,24 +57,25 @@ export default defineComponent({
   data() {
     return {
       words: [],
+      currentLevelWords: [],
       showModal: false,
       levelOneWords: [],
       levelTwoWords: [],
       levelThreeWords: [],
       levelFourWords: [],
-      quizWords: [
-        this.levelOneWords,
-        this.levelTwoWords,
-        this.levelThreeWords,
-        this.levelFourWords,
-      ],
+      quizWords: [ ],
+      scores: [0,0,0,0],
+      currentLevelIndex: 0,
       currentIndex: 0,
       selectedOption: null,
       wordSet: 0, // Counter for the set of words
       correctOption: null,
-      levelOneWordsScore: 0,
-      levelTwoWordsScore: 0,
     };
+  },
+  computed: {
+    isLastWordInLevel() {
+      return this.currentIndex == this.quizWords[this.currentLevelIndex].length-1
+    }
   },
   methods: {
     generateWordList() {
@@ -87,9 +88,9 @@ export default defineComponent({
       this.generateWordsWithAnswers(secondWordGroup, 2);
       this.generateWordsWithAnswers(thirdWordGroup, 3);
       this.generateWordsWithAnswers(fourthWordGroup, 4);
-      
+      this.quizWords = [this.levelOneWords, this.levelTwoWords, this.levelThreeWords, this.levelFourWords]
+    
       // this.shuffleWords() // make shuffle all words 
-      this.levelOneWordsScore = 0;
       this.selectedOption = null; // reset selected option when generating new word list
       this.currentIndex = 0;
     },
@@ -102,7 +103,6 @@ export default defineComponent({
       return nextLevelWords;
     },
     generateWordsWithAnswers(wordGroup, level) {
-
       for (let i = 0; i < 5; i++) {
         const { randomIndex, randomWord } = this.generateRandomWord(wordGroup);
         wordGroup.splice(randomIndex, 1); // remove word so it can't be chosen again
@@ -111,6 +111,7 @@ export default defineComponent({
         switch (level) {
           case 1: 
             this.levelOneWords.push(wordWithAnswers);
+            this.currentLevelWords.push(wordWithAnswers);
             break;
           case 2:
             this.levelTwoWords.push(wordWithAnswers);
@@ -154,30 +155,44 @@ export default defineComponent({
       };
       return wordWithOptions;
     },
-    showNextWord() {
-      if (
-        this.selectedOption ==
-        this.levelOneWords[this.currentIndex].correctIndex
-      ) {
-        this.correctOption = true; // set correctOption to true
-        this.levelOneWordsScore++; // increment the score
+    evaluateResponse() {
+      let currentLevelWords = this.quizWords[this.currentLevelIndex]
+      if (this.selectedOption == currentLevelWords[this.currentIndex].correctIndex) {
+        this.scores[this.currentLevelIndex]++
+        this.correctOption = true;
       } else {
-        this.correctOption = false; // set correctOption to false
+        this.correctOption = false;
+      }
+    },
+    isRightAnswer() {
+      return this.selectedOption == this.levelOneWords[this.currentIndex].correctIndex
+    },
+    didPassLevel() {
+      console.log(Number(this.scores[this.currentLevelIndex]) / Number(this.quizWords[this.currentLevelIndex].length));
+      if ((this.scores[this.currentLevelIndex] / this.quizWords[this.currentLevelIndex].length) >= 0.80) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    showNextWord() {
+      if (this.isLastWordInLevel) {
+        this.evaluateResponse()
+      } else if (this.isRightAnswer) {
+        this.evaluateResponse()
       }
       setTimeout(() => {
-        this.currentIndex++;
-        if (this.currentIndex >= this.levelOneWords.length) {
-          // Calculate the final score for levelOneWords
-          const score = this.levelOneWordsScore / this.levelOneWords.length;
-          if (score >= 0.8) {
-            console.log("You passed!");
-          } else {
-            console.log("You failed.");
-          }
+        if (!this.isLastWordInLevel) {
+          this.currentIndex++;
+        } else if (this.didPassLevel()) {
+          console.log("You passed this level!")
           this.currentIndex = 0;
-          this.levelOneWordsScore = 0; // reset the score
+          this.currentLevelIndex++ 
+          this.currentLevelWords = this.quizWords[this.currentLevelIndex]
+          this.currentLevelIndex++ 
+        } else {
+          console.log("You failed this level")
         }
-        // Reset the selected option
         this.selectedOption = null;
       }, 250);
     },

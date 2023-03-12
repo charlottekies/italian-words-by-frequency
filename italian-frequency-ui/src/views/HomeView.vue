@@ -135,22 +135,23 @@ export default defineComponent({
       const randomWord = words[randomIndex];
       return { randomIndex, randomWord };
     },
-    generateIncorrectTranslations(word, words) {
-      const incorrectTranslations = [];
-      for (let j = 0; j < 3; j++) {
-        let randomWord, randomIndex;
-        do {({ randomWord, randomIndex } = this.generateRandomWord(words));} 
-        while (incorrectTranslations.includes(randomWord));
-
-        incorrectTranslations.push(randomWord.translation);
-        words.splice(randomIndex, 1);
-      }
-      return incorrectTranslations;
-    },
     generateTranslations(word, words) {
       const correctTranslation = word.translation;
       const incorrectTranslations = this.generateIncorrectTranslations(word, words);
       return { correctTranslation, incorrectTranslations };
+    },
+    generateIncorrectTranslations(word, words) {
+      const incorrectTranslations = [];
+      for (let j = 0; j < 3; j++) {
+        let randomWord, randomIndex;
+        do {
+          ({ randomWord, randomIndex } = this.generateRandomWord(words));
+        } while (incorrectTranslations.some(t => t.translation === randomWord.translation));
+          
+        incorrectTranslations.push(randomWord);
+        words.splice(randomIndex, 1);
+      }
+      return incorrectTranslations.map(t => t.translation);
     },
     generateWordWithAnswers(correctTranslation, incorrectTranslations, randomWord) {
       const options = [correctTranslation, ...incorrectTranslations].sort(
@@ -200,15 +201,26 @@ export default defineComponent({
             this.currentLevelWords = this.quizWords[this.currentLevelIndex]
             this.recommendedLevel = this.currentLevelIndex + 2
           } else {
-            this.currentLevelWords = []
+            this.resetQuizLevels()
           }
         } else {
           console.log("You failed this level")
           this.recommendedLevel = this.currentLevelIndex + 1
-          this.currentLevelWords = []
+          this.resetQuizValues()
         }
         this.selectedOption = null;
       }, 250);
+    },
+    resetQuizValues() {
+      this.currentLevelWords = [];
+      this.quizWords = [];
+      this.levelOneWords = []
+      this.levelTwoWords = []
+      this.levelThreeWords = []          
+      this.levelFourWords = []
+      this.currentLevelIndex = 0          
+      this.currentIndex = 0
+      this.scores = [0,0,0,0]
     },
     // TODO: Shuffle all words after creating whole list.
     shuffleWords() {

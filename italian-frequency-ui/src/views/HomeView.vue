@@ -135,18 +135,21 @@ export default defineComponent({
       const randomWord = words[randomIndex];
       return { randomIndex, randomWord };
     },
-    generateTranslations(word, words) {
-      // Choose a correct translation for the word
-      const correctTranslation = word.translation;
-
-      // Choose 3 incorrect translations from the remaining 499 words
+    generateIncorrectTranslations(word, words) {
       const incorrectTranslations = [];
       for (let j = 0; j < 3; j++) {
-        const randomIndex = Math.floor(Math.random() * words.length);
-        const randomWord = words[randomIndex];
+        let randomWord, randomIndex;
+        do {({ randomWord, randomIndex } = this.generateRandomWord(words));} 
+        while (incorrectTranslations.includes(randomWord));
+
         incorrectTranslations.push(randomWord.translation);
         words.splice(randomIndex, 1);
       }
+      return incorrectTranslations;
+    },
+    generateTranslations(word, words) {
+      const correctTranslation = word.translation;
+      const incorrectTranslations = this.generateIncorrectTranslations(word, words);
       return { correctTranslation, incorrectTranslations };
     },
     generateWordWithAnswers(correctTranslation, incorrectTranslations, randomWord) {

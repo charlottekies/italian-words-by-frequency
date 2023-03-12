@@ -41,7 +41,7 @@
           <p>Based on your results, we recommend you begin studying at level {{ recommendedLevel }}</p>
         </div>
       </quiz-modal>
-      <word-table :words="words" />
+      <word-table :words="words" :recommendedStartingFrequency="recommendedStartingFrequency"/>
       <div v-if="!words || words.length === 0"></div>
     </div>
   </v-app>
@@ -51,6 +51,8 @@
 import WordTable from "@/components/WordTable.vue";
 import QuizModal from "@/components/QuizModal.vue";
 import { defineComponent } from "vue";
+import { Constant } from '../constants/constants.js';
+
 
 export default defineComponent({
   name: "HomeView",
@@ -67,7 +69,7 @@ export default defineComponent({
       levelTwoWords: [],
       levelThreeWords: [],
       levelFourWords: [],
-      quizWords: [ ],
+      quizWords: [],
       scores: [0,0,0,0],
       currentLevelIndex: 0,
       currentIndex: 0,
@@ -80,14 +82,31 @@ export default defineComponent({
   computed: {
     isLastWordInLevel() {
       return this.currentIndex == this.quizWords[this.currentLevelIndex].length-1
-    }
+    },
+    recommendedStartingFrequency() {
+      // derive the value of the prop based on someData
+      switch (this.recommendedLevel) { 
+        case 1:
+          return Constant.LevelOneFrequencyLow;
+        case 2:
+          return Constant.LevelTwoFrequencyLow;
+        case 3:
+         return Constant.LevelThreeFrequencyLow;
+        case 4:
+          return Constant.LevelFourFrequencyLow;
+        case 5:
+          return Constant.LevelFiveFrequencyLow;
+        default:
+          return Constant.LevelOneFrequencyLow;
+      }
+    },
   },
   methods: {
     generateWordList() {
-      const firstWordGroup = this.getNextLevelWords(0);
-      const secondWordGroup = this.getNextLevelWords(99);
-      const thirdWordGroup = this.getNextLevelWords(100);
-      const fourthWordGroup = this.getNextLevelWords(199);
+      const firstWordGroup = this.getNextLevelWords(Constant.LevelOneFrequencyLow);
+      const secondWordGroup = this.getNextLevelWords(Constant.LevelTwoFrequencyLow);
+      const thirdWordGroup = this.getNextLevelWords(Constant.LevelThreeFrequencyLow);
+      const fourthWordGroup = this.getNextLevelWords(Constant.LevelFourFrequencyLow);
 
       this.generateWordsWithAnswers(firstWordGroup, 1);
       this.generateWordsWithAnswers(secondWordGroup, 2);
@@ -103,7 +122,7 @@ export default defineComponent({
       const wordsCopy = [...this.words];
       const nextLevelWords = wordsCopy.splice(
         startingIndex,
-        startingIndex + 100
+        startingIndex + Constant.NumWordsInLevel
       );
       return nextLevelWords;
     },
@@ -206,6 +225,7 @@ export default defineComponent({
         } else {
           console.log("You failed this level")
           this.recommendedLevel = this.currentLevelIndex + 1
+          
           this.resetQuizValues()
         }
         this.selectedOption = null;

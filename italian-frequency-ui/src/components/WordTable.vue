@@ -56,13 +56,14 @@
   library.add(faSort, faArrowUp, faArrowDown);
   
   export default {
-    props: ["words"],
+    props: 
+    ["words", "recommendedStartingFrequency"],
     data() {
       return {
         sortKey: "",
         sortOrder: "",
         maxFrequency: 5000,
-        minFrequency: 1,
+        minFrequency: this.recommendedStartingFrequency, // initialize to prop value
         search: ""
       };
     },
@@ -111,7 +112,12 @@
       FontAwesomeIcon,
     },
     created() {
-    }
+    },
+    watch: {
+    recommendedStartingFrequency(newVal) {
+      this.minFrequency = newVal;
+    },
+  },
   };
   </script>
   

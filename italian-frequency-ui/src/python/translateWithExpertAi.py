@@ -77,8 +77,8 @@ for i, token in enumerate(data['data']['tokens']):
 # curl - X POST https: // developer.expert.ai/oauth2/token \
 #     - H 'Content-Type: application/json; charset=utf-8' \
 #     - d '{
-#         "username": "chopekies@gmail.com",
-#         "password": "3WmSRN.hCf4MYgh"
+#         "username": "<replaceMe>",
+#         "password": "<replaceMe>"
 #     }'
 
     # translations = [prop["value"]

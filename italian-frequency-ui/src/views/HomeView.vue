@@ -77,6 +77,7 @@ export default defineComponent({
       wordSet: 0, // Counter for the set of words
       correctOption: null,
       recommendedLevel: null,
+      recommendedLevelFinal: 0,
     };
   },
   computed: {
@@ -85,19 +86,19 @@ export default defineComponent({
     },
     recommendedStartingFrequency() {
       // derive the value of the prop based on someData
-      switch (this.recommendedLevel) { 
+      switch (this.recommendedLevelFinal) { 
         case 1:
-          return Constant.LevelOneFrequencyLow;
+          return Constant.LevelOneFrequencyLow + 1;
         case 2:
-          return Constant.LevelTwoFrequencyLow;
+          return Constant.LevelTwoFrequencyLow + 1;
         case 3:
-         return Constant.LevelThreeFrequencyLow;
+         return Constant.LevelThreeFrequencyLow + 1;
         case 4:
-          return Constant.LevelFourFrequencyLow;
+          return Constant.LevelFourFrequencyLow + 1;
         case 5:
-          return Constant.LevelFiveFrequencyLow;
+          return Constant.LevelFiveFrequencyLow + 1;
         default:
-          return Constant.LevelOneFrequencyLow;
+          return Constant.LevelOneFrequencyLow + 1;
       }
     },
   },
@@ -216,16 +217,17 @@ export default defineComponent({
           console.log("You passed this level!")
           this.currentIndex = 0;
           this.currentLevelIndex++ 
-          if (this.currentLevelIndex <= this.quizWords.length-1) {
+          if (this.currentLevelIndex <= this.quizWords.length-1) { // end of quiz reached
             this.currentLevelWords = this.quizWords[this.currentLevelIndex]
             this.recommendedLevel = this.currentLevelIndex + 2
           } else {
             this.resetQuizValues()
+            this.recommendedLevelFinal = this.recommendedLevel
           }
         } else {
           console.log("You failed this level")
           this.recommendedLevel = this.currentLevelIndex + 1
-          
+          this.recommendedLevelFinal = this.recommendedLevel
           this.resetQuizValues()
         }
         this.selectedOption = null;

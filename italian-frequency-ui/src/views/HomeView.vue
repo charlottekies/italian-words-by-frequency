@@ -146,8 +146,8 @@ export default defineComponent({
         let randomWord, randomIndex;
         do {
           ({ randomWord, randomIndex } = this.generateRandomWord(words));
-        } while (incorrectTranslations.some(t => t.translation === randomWord.translation));
-          
+        } while (incorrectTranslations.some(t => t.translation === randomWord.translation) || randomWord.translation === word.translation);
+            
         incorrectTranslations.push(randomWord);
         words.splice(randomIndex, 1);
       }

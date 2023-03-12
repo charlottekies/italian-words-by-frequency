@@ -57,3 +57,4 @@ italian-frequency/DigiCertGlobalRootCA.crt
 localhostCertificate.pem
 selfSignedCert.cer
 selfSignedCert.pem
+getexpertAIToken.sh

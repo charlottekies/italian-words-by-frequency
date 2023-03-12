@@ -72,15 +72,3 @@ for i, token in enumerate(data['data']['tokens']):
     print(token["morphology"])
     print(f'Lemma ({token["lemma"]}):')
     print('---')
-
-
-# curl - X POST https: // developer.expert.ai/oauth2/token \
-#     - H 'Content-Type: application/json; charset=utf-8' \
-#     - d '{
-#         "username": "<replaceMe>",
-#         "password": "<replaceMe>"
-#     }'
-
-    # translations = [prop["value"]
-    #                 for prop in token["lemma"] if prop["type"] == "translation"]
-    # print(', '.join(translations))

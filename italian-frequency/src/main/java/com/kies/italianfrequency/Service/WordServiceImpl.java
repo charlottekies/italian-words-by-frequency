@@ -46,8 +46,6 @@ public class WordServiceImpl {
         List<Word> words = wordRepository.findAll();
         log.debug("Found {} words: {}", words.size(), words);
 
-
-
         for (Word word : words) {
             try {
                 String json = mapper.writeValueAsString(word);

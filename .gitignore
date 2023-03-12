@@ -54,3 +54,7 @@ Italian-frequency-app-springboot-server-key-pair.pem
 keystore.p12
 private-key.pem
 italian-frequency/DigiCertGlobalRootCA.crt
+localhostCertificate.pem
+selfSignedCert.cer
+selfSignedCert.pem
+getexpertAIToken.sh

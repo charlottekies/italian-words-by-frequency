@@ -9,8 +9,12 @@ import jakarta.persistence.Id;
 import javax.persistence.Table;
 import jakarta.persistence.Entity;
 
+import jakarta.persistence.Transient;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Entity(name = "word")
@@ -20,8 +24,8 @@ public class Word {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "id")
-    private long id;
+    @Column(name = "word_id")
+    private long word_id;
 
     @JsonProperty
     @Column(name = "word")
@@ -31,9 +35,12 @@ public class Word {
     @Column(name = "frequency")
     private int frequency;
 
+    @JsonProperty
+    @Column(name = "translation")
+    private String translation;
+
     public Word() {
         super();
     }
-
 
 }

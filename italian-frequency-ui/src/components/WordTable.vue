@@ -29,12 +29,16 @@
                 <font-awesome-icon :icon="sortOrder === 'asc' ? ['fas', 'arrow-up'] : ['fas', 'arrow-down']" />
               </span>
             </th>
+            <th>
+              Translation
+            </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="wordObj in filteredWords" :key="wordObj.frequency">
             <td>{{ wordObj.word }}</td>
             <td>{{ wordObj.frequency }}</td>
+            <td>{{ wordObj.translation }}</td>
           </tr>
         </tbody>
       </table>
@@ -52,13 +56,14 @@
   library.add(faSort, faArrowUp, faArrowDown);
   
   export default {
-    props: ["words"],
+    props: 
+    ["words", "recommendedStartingFrequency"],
     data() {
       return {
         sortKey: "",
         sortOrder: "",
-        maxFrequency: this.words.length,
-        minFrequency: 1,
+        maxFrequency: 5000,
+        minFrequency: this.recommendedStartingFrequency, // initialize to prop value
         search: ""
       };
     },
@@ -68,6 +73,7 @@
           return this.words.map((wordObj) => ({
             word: wordObj.word.toUpperCase(),
             frequency: wordObj.frequency,
+            translation: wordObj.translation
           }));
         }
         return [];
@@ -104,10 +110,14 @@
     },
     components: {
       FontAwesomeIcon,
-    },created() {
-  console.log('Words prop:', this.words);
-}
-    
+    },
+    created() {
+    },
+    watch: {
+    recommendedStartingFrequency(newVal) {
+      this.minFrequency = newVal;
+    },
+  },
   };
   </script>
   

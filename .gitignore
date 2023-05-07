@@ -58,3 +58,4 @@ localhostCertificate.pem
 selfSignedCert.cer
 selfSignedCert.pem
 getexpertAIToken.sh
+LightsailDefaultKey-us-east-1.pem

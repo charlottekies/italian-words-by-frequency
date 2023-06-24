@@ -42,5 +42,4 @@ public class Word {
     public Word() {
         super();
     }
-
 }
